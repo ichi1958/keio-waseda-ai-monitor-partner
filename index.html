@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI伴走提案スライド（宴会場スクリーン向け高コントラスト版）</title>
+  <style>
+    :root{
+      --teal:#22B8C9;
+      --blue:#4A78D8;
+      --purple:#6E4FC9;
+      --navy:#0f2740;
+      --navy-2:#18334f;
+      --text:#10253c;
+      --muted:#334d66;
+      --white:#ffffff;
+      --paper:#f7fbff;
+      --line:#c7d9eb;
+      --grad:linear-gradient(135deg,var(--teal) 0%,var(--blue) 52%,var(--purple) 100%);
+      --shadow:0 18px 40px rgba(8,30,56,.14);
+      --shadow-soft:0 8px 24px rgba(8,30,56,.10);
+      --network:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cg fill='none' stroke-width='1.4'%3E%3Cpath d='M95 155 L310 80 L520 165 L760 105 L980 200 L1210 130 L1460 210' stroke='rgba(34,184,201,.18)'/%3E%3Cpath d='M120 705 L340 615 L560 700 L810 620 L1080 710 L1375 615' stroke='rgba(74,120,216,.16)'/%3E%3Cpath d='M310 80 L250 275 L430 360 L520 165' stroke='rgba(110,79,201,.15)'/%3E%3Cpath d='M760 105 L690 310 L860 400 L980 200' stroke='rgba(34,184,201,.15)'/%3E%3Cpath d='M1210 130 L1160 320 L1320 420 L1460 210' stroke='rgba(110,79,201,.15)'/%3E%3C/g%3E%3Cg%3E%3Ccircle cx='95' cy='155' r='7' fill='rgba(34,184,201,.34)'/%3E%3Ccircle cx='310' cy='80' r='8' fill='rgba(74,120,216,.32)'/%3E%3Ccircle cx='520' cy='165' r='8' fill='rgba(110,79,201,.30)'/%3E%3Ccircle cx='760' cy='105' r='7' fill='rgba(34,184,201,.30)'/%3E%3Ccircle cx='980' cy='200' r='8' fill='rgba(74,120,216,.28)'/%3E%3Ccircle cx='1210' cy='130' r='7' fill='rgba(110,79,201,.28)'/%3E%3Ccircle cx='1460' cy='210' r='8' fill='rgba(34,184,201,.30)'/%3E%3Ccircle cx='120' cy='705' r='7' fill='rgba(74,120,216,.26)'/%3E%3Ccircle cx='340' cy='615' r='8' fill='rgba(34,184,201,.26)'/%3E%3Ccircle cx='560' cy='700' r='7' fill='rgba(110,79,201,.24)'/%3E%3Ccircle cx='810' cy='620' r='8' fill='rgba(74,120,216,.24)'/%3E%3Ccircle cx='1080' cy='710' r='7' fill='rgba(34,184,201,.24)'/%3E%3Ccircle cx='1375' cy='615' r='8' fill='rgba(110,79,201,.24)'/%3E%3C/g%3E%3C/svg%3E");
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;overflow:hidden;background:linear-gradient(180deg,#e9f3fb,#f4f9fd 55%,#ebf3fb);font-family:'Yu Gothic','YuGothic','Hiragino Kaku Gothic ProN','Meiryo',sans-serif;color:var(--text)}
+    .app{min-height:100%;display:grid;place-items:center;padding:18px}
+    .deck{position:relative;width:min(96vw,calc(92vh * 16 / 9));aspect-ratio:16/9;border-radius:30px;overflow:hidden;background:#fff;box-shadow:0 28px 80px rgba(12,32,56,.18);border:2px solid rgba(24,51,79,.08)}
+    .progress-track{position:absolute;top:0;left:0;right:0;height:7px;background:#dbe8f4;z-index:40}
+    .progress-bar{height:100%;width:10%;background:var(--grad);transition:width .45s ease}
+    .slides{position:absolute;inset:0;overflow:hidden}
+    .slide{position:absolute;inset:0;padding:60px 54px 96px;opacity:0;transform:translateX(32px) scale(.99);transition:opacity .45s ease,transform .55s cubic-bezier(.2,.8,.2,1);pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(249,252,255,.99))}
+    .slide::before{content:"";position:absolute;inset:0;background-image:var(--network);background-size:cover;background-repeat:no-repeat;pointer-events:none}
+    .slide::after{content:"";position:absolute;inset:14px;border:2px solid rgba(24,51,79,.08);border-radius:24px;pointer-events:none}
+    .slide.active{opacity:1;transform:translateX(0) scale(1);pointer-events:auto;z-index:2}
+    .slide.prev{transform:translateX(-34px) scale(.99)}
+    .slide.next{transform:translateX(34px) scale(.99)}
+    .layout{position:relative;z-index:2;display:grid;grid-template-columns:72fr 28fr;gap:22px;height:100%}
+    .left{display:flex;flex-direction:column;min-width:0}
+    .right{display:flex;align-items:center;justify-content:center;min-width:0}
+    .eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:14px;color:var(--blue);font-size:15px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+    .eyebrow::before{content:"";width:48px;height:6px;border-radius:999px;background:var(--grad)}
+    h1{margin:0 0 16px;font-size:clamp(40px,3.45vw,68px);line-height:1.12;letter-spacing:.01em;font-weight:900;color:var(--navy)}
+    h2{margin:0 0 22px;font-size:clamp(22px,1.55vw,32px);line-height:1.55;font-weight:900;color:var(--muted)}
+    .lead{margin:0 0 20px;font-size:clamp(22px,1.45vw,30px);line-height:1.7;font-weight:800;color:var(--muted)}
+    .panel,.meta,.visual,.placeholder,.step,.qa,.kpi-card,.compare-box,.mini-card{background:#fff;border:2px solid var(--line);border-radius:24px;box-shadow:var(--shadow-soft)}
+    .hero{position:relative;z-index:2;display:grid;align-content:center;height:100%;gap:24px}
+    .hero-media{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+    .hero-media img{position:absolute;right:-3%;top:0;width:56%;height:100%;object-fit:cover;opacity:.18}
+    .hero-badge{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:999px;background:#fff;border:2px solid var(--line);box-shadow:var(--shadow-soft);font-size:18px;font-weight:900;color:var(--blue)}
+    .hero-badge .pill{padding:6px 12px;border-radius:999px;background:var(--grad);color:#fff;font-size:14px}
+    .hero h1{max-width:860px;font-size:clamp(52px,4.4vw,84px)}
+    .hero .subtitle{margin:0;font-size:clamp(26px,1.85vw,36px);line-height:1.55;font-weight:900;color:var(--muted)}
+    .meta{display:grid;gap:12px;padding:22px 24px;max-width:860px;font-size:clamp(22px,1.4vw,30px);line-height:1.7;font-weight:800;color:var(--text)}
+    .meta .row{display:flex;gap:16px;align-items:flex-start}.meta .label{min-width:86px;color:var(--navy);font-weight:900}
+    .bullet-list{list-style:none;margin:0;padding:0;display:grid;gap:16px}
+    .bullet-list li{display:grid;grid-template-columns:38px 1fr;gap:18px;align-items:flex-start;padding:18px 20px;border-radius:24px;background:#fff;border:2px solid var(--line);box-shadow:var(--shadow-soft);font-size:clamp(24px,1.55vw,31px);line-height:1.7;font-weight:900;color:var(--text)}
+    .dot{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#fff;font-weight:900;font-size:17px;box-shadow:0 8px 18px rgba(74,120,216,.18)}
+    .mini-cards,.program-cards,.benefit-cards,.kpi-row,.faq-grid,.step-list{display:grid;gap:14px}
+    .mini-cards,.benefit-cards,.kpi-row,.faq-grid,.step-list{grid-template-columns:1fr}
+    .program-cards{grid-template-columns:1fr 1fr}
+    .mini-card,.panel,.kpi-card{padding:18px 20px}
+    .tag{display:inline-block;margin-bottom:10px;padding:7px 12px;border-radius:999px;background:var(--grad);color:#fff;font-size:14px;font-weight:900;letter-spacing:.06em}
+    .mini-card p,.panel p,.kpi-card p{margin:0;font-size:clamp(20px,1.25vw,25px);line-height:1.75;font-weight:800;color:var(--text)}
+    .mini-card h3,.panel h3,.kpi-card h3,.compare-box h3,.step h3,.qa strong{margin:0 0 8px;font-size:clamp(24px,1.55vw,32px);line-height:1.45;font-weight:900;color:var(--navy)}
+    .flow{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:18px}.chip{padding:14px 18px;border-radius:999px;border:2px solid var(--line);background:#fff;box-shadow:var(--shadow-soft);font-size:clamp(19px,1.15vw,24px);font-weight:900;color:var(--navy)}.chip.current{background:var(--grad);color:#fff;border-color:transparent}.arrow{font-size:28px;font-weight:900;color:var(--blue)}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:999px;background:var(--grad);color:#fff;font-size:18px;font-weight:900;align-self:flex-start;margin-bottom:16px;box-shadow:0 10px 24px rgba(74,120,216,.22)}
+    .kpi{display:block;margin-top:8px;font-size:clamp(38px,2.6vw,50px);line-height:1.1;font-weight:900;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .compare{display:grid;grid-template-columns:1fr 1fr;gap:14px}.compare-box{padding:18px 20px}.compare-box ul{margin:0;padding-left:24px;font-size:clamp(20px,1.2vw,24px);line-height:1.85;font-weight:800;color:var(--text)}
+    .step{display:grid;grid-template-columns:72px 1fr;gap:16px;padding:20px}.step-num{width:72px;height:72px;border-radius:22px;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:28px;font-weight:900;box-shadow:0 10px 22px rgba(74,120,216,.18)}.step p{margin:0;font-size:clamp(20px,1.2vw,24px);line-height:1.8;font-weight:800;color:var(--text)}
+    .qa{padding:20px}.qa-line{display:grid;grid-template-columns:42px 1fr;gap:14px;align-items:flex-start}.qa-line + .qa-line{margin-top:12px}.qa-badge{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:18px;font-weight:900}.qb{background:var(--grad)}.ab{background:linear-gradient(135deg,#7e91a9,#a6b5c6)}.qa span{font-size:clamp(20px,1.2vw,24px);line-height:1.85;font-weight:800;color:var(--text)}
+    .visual,.placeholder{width:100%;padding:16px;background:linear-gradient(180deg,#fff,#f6fbff)}
+    .visual-label{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:#eef5fb;border:2px solid var(--line);font-size:14px;font-weight:900;color:var(--blue);justify-self:start}
+    .visual img{width:100%;height:230px;object-fit:contain;display:block;background:#fff;border-radius:18px;border:2px solid var(--line);margin-top:12px}
+    .placeholder-box{height:170px;display:grid;place-items:center;text-align:center;padding:14px;border-radius:20px;border:3px dashed #8da8c3;background:#fbfdff;color:#41637d;font-size:clamp(17px,1.02vw,20px);line-height:1.7;font-weight:900;margin-top:12px}
+    .placeholder-note{margin-top:12px;font-size:clamp(16px,.98vw,19px);line-height:1.75;font-weight:800;color:#4f6a81}
+    .slide-10{background:var(--grad)}
+    .slide-10::before{content:"";position:absolute;inset:0;background-image:var(--network);background-size:cover;background-repeat:no-repeat;opacity:.8;filter:brightness(1.2)}
+    .slide-10::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.18),transparent 26%),radial-gradient(circle at 80% 75%,rgba(255,255,255,.15),transparent 28%)}
+    .closing{position:relative;z-index:2;display:grid;grid-template-columns:72fr 28fr;gap:22px;height:100%;align-items:center}
+    .closing h1{color:#fff;font-size:clamp(48px,4.1vw,78px)}.closing .subtitle{margin:0 0 24px;color:rgba(255,255,255,.95);font-size:clamp(26px,1.7vw,34px);line-height:1.55;font-weight:900}
+    .contact{padding:26px;border-radius:26px;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.32);backdrop-filter:blur(14px);box-shadow:0 18px 40px rgba(12,24,46,.18)}
+    .contact-title{display:inline-flex;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.20);border:2px solid rgba(255,255,255,.22);font-size:20px;font-weight:900;margin-bottom:16px;color:#fff}
+    .contact-list{display:grid;gap:10px;color:#fff;font-size:clamp(24px,1.48vw,32px);line-height:1.75;font-weight:900}.contact-note{margin-top:16px;color:rgba(255,255,255,.9);font-size:clamp(19px,1.05vw,23px);font-weight:800}
+    .hud{position:absolute;left:20px;right:20px;bottom:16px;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px}.indicator{display:inline-flex;align-items:center;gap:10px;padding:11px 15px;border-radius:999px;background:rgba(255,255,255,.94);border:2px solid var(--line);box-shadow:var(--shadow-soft);font-size:16px;font-weight:900;color:var(--navy)}.indicator .current{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#fff;font-size:15px}
+    .controls,.top-actions{display:flex;align-items:center;gap:10px}.top-actions{position:absolute;top:16px;right:16px;z-index:55}.shortcut{position:absolute;top:16px;left:16px;z-index:55;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.94);border:2px solid var(--line);box-shadow:var(--shadow-soft);font-size:12px;font-weight:900;color:var(--navy-2)}
+    .btn{appearance:none;border:none;border-radius:999px;padding:12px 18px;background:rgba(255,255,255,.96);border:2px solid var(--line);box-shadow:var(--shadow-soft);font:inherit;font-weight:900;color:var(--navy);cursor:pointer;transition:transform .16s ease,box-shadow .2s ease,opacity .2s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 14px 28px rgba(30,65,114,.15)}.btn.primary,.btn.autoplay-on{background:var(--grad);color:#fff;border-color:transparent}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .audio-start-overlay{position:absolute;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:rgba(9,23,40,.42);backdrop-filter:blur(4px)}
+    .audio-start-card{width:min(720px,92%);padding:30px;border-radius:28px;background:rgba(255,255,255,.98);border:2px solid var(--line);box-shadow:0 24px 60px rgba(8,30,56,.20);text-align:center}
+    .audio-start-card h3{margin:0 0 12px;font-size:clamp(28px,2vw,38px);line-height:1.3;color:var(--navy)}
+    .audio-start-card p{margin:0 0 20px;font-size:clamp(18px,1.08vw,22px);line-height:1.8;color:var(--muted);font-weight:800}
+    .audio-meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:20px}
+    .audio-meta span{padding:10px 14px;border-radius:999px;background:#eef5fb;border:2px solid var(--line);font-size:14px;font-weight:900;color:var(--navy-2)}
+    .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    @media (max-width:1120px){.slide{padding:54px 34px 96px}.layout,.closing{grid-template-columns:1fr;gap:18px}.program-cards,.compare{grid-template-columns:1fr}.visual img{height:180px}.hero-media img{width:100%;right:-10%;opacity:.12}}
+    @media (max-width:760px){.app{padding:10px}.deck{width:98vw;border-radius:18px}.slide{padding:46px 18px 104px}.shortcut{display:none}.hud{left:12px;right:12px;bottom:12px;flex-wrap:wrap}.controls{width:100%;justify-content:flex-end}.btn{padding:11px 14px;font-size:14px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main class="deck" id="deck" aria-label="AI伴走提案スライド 宴会場スクリーン向け高コントラスト版">
+      <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="shortcut">高コントラスト版 / 音声つき / クリックで再生開始 / ← → / Home End / F</div>
+      <div class="top-actions">
+        <button class="btn autoplay-on" id="autoplayBtn" type="button">⏸ 自動再生中</button>
+        <button class="btn" id="fullscreenBtn" type="button">⛶ 全画面</button>
+      </div>
+
+      <div class="audio-start-overlay" id="audioStartOverlay">
+        <div class="audio-start-card">
+          <h3>ナレーション＋BGMつき版</h3>
+          <p>ブラウザの仕様上、音声つき自動再生は最初のクリックが必要です。開始ボタンを押すと、BGMを小さく流しながら各スライドのナレーション再生と自動ページ送りを始めます。</p>
+          <div class="audio-meta">
+            <span>落ち着いた男性ナレーション</span>
+            <span>控えめBGM</span>
+            <span>ナレーション優先</span>
+          </div>
+          <button class="btn primary" id="startAudioBtn" type="button">▶ 再生開始</button>
+        </div>
+      </div>
+
+      <div class="slides">
+        <section class="slide active" aria-label="スライド 1">
+          <div class="hero-media"><img src="images/slide01.jpg" alt="表紙ビジュアル"></div>
+          <div class="hero">
+            <div class="hero-badge"><span class="pill">3社限定</span>AIモニターパートナー募集</div>
+            <div>
+              <h1>一緒に始める、<br>経営へのAI伴走！</h1>
+              <p class="subtitle">モニターパートナー3社限定のご案内</p>
+            </div>
+            <div class="meta">
+              <div class="row"><span class="label">発表者</span><span><strong>市川 亨</strong>（GSJ株式会社 / AIライター・AIコンサルタント）</span></div>
+              <div class="row"><span class="label">日時</span><span>2026年7月24日</span></div>
+              <div class="row"><span class="label">会場</span><span>早慶ビアパーティー</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 2">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">Issue Recognition</div>
+              <h1>多くの経営者が感じている、<br>ある違和感</h1>
+              <h2>情報は増えている。けれど、実践はまだ追いつかない。</h2>
+              <ul class="bullet-list">
+                <li><span class="dot">1</span><span>AIの情報は毎日入ってくるが、自社での実践は追いついていない</span></li>
+                <li><span class="dot">2</span><span>現場に導入しても、使われずに終わる仕組みになりがち</span></li>
+                <li><span class="dot">3</span><span>情報は聞くが、相談できる相手が身近にいない</span></li>
+              </ul>
+            </div>
+            <div class="right">
+              <div class="visual">
+                <div class="visual-label">ダミービジュアル候補</div>
+                <img src="images/slide02.jpg" alt="違和感の参考ビジュアル">
+                <div class="placeholder-note">候補例：情報量と実践量のギャップを示す棒グラフ</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 3">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">Why Now</div>
+              <h1>なぜ、今このタイミングか</h1>
+              <h2>「知る」から「試す」へ。いまが分岐点です。</h2>
+              <div class="mini-cards">
+                <div class="mini-card"><span class="tag">POINT 1</span><p>生成AIの実用化が急速に進み、経営判断のスピードが問われている</p></div>
+                <div class="mini-card"><span class="tag">POINT 2</span><p>三田会・稲門会という信頼関係のあるネットワークだからこそ率直に試し合える</p></div>
+                <div class="mini-card"><span class="tag">POINT 3</span><p>情報の受け手から使い手になる分岐点にいる</p></div>
+              </div>
+              <div class="flow"><span class="chip">知る</span><span class="arrow">→</span><span class="chip current">試す（現在地）</span><span class="arrow">→</span><span class="chip">使いこなす</span></div>
+            </div>
+            <div class="right">
+              <div class="visual">
+                <div class="visual-label">ダミービジュアル候補</div>
+                <img src="images/slide03.jpg" alt="タイミングの参考ビジュアル">
+                <div class="placeholder-note">候補例：知る → 試す → 使いこなす の流れ図</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 4">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">Today Onward</div>
+              <h1>解決の方向性<br>「今日から始める！」</h1>
+              <h2>AIを“知る”から、“日常業務で使う”へ。</h2>
+              <ul class="bullet-list">
+                <li><span class="dot">1</span><span>AIを知るから、日常業務で使うへ橋渡しする</span></li>
+                <li><span class="dot">2</span><span>議事録・社内外への発信という、経営者が日々行っている業務から始める</span></li>
+                <li><span class="dot">3</span><span>導入して終わりにせず、2ヶ月間伴走する</span></li>
+              </ul>
+            </div>
+            <div class="right">
+              <div class="visual">
+                <div class="visual-label">ダミービジュアル候補</div>
+                <img src="images/slide04.jpg" alt="解決の方向性の参考ビジュアル">
+                <div class="placeholder-note">候補例：3段階フロー図 / 伴走イメージ</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 5">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">8 Week Program</div>
+              <h1>2ヶ月間伴走プログラムの内容</h1>
+              <h2>診断 → 導入 → 定着 → 自走化まで、段階的に進めます。</h2>
+              <div class="program-cards">
+                <div class="panel"><h3>Week 1-2　現状診断</h3><p>議事録・発信業務の実態を見える化</p></div>
+                <div class="panel"><h3>Week 3-4　AI導入</h3><p>議事録自動生成・発信文作成の実装</p></div>
+                <div class="panel"><h3>Week 5-6　定着支援</h3><p>現場での運用サポート・質疑応答</p></div>
+                <div class="panel"><h3>Week 7-8　自走化</h3><p>AIを日常業務に溶け込ませる</p></div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="placeholder">
+                <div class="visual-label">ダミービジュアル枠</div>
+                <div class="placeholder-box">ここに「4区分の工程図」<br>または「8週間タイムライン」</div>
+                <div class="placeholder-note">参考画像は省略し、文字の視認性を優先しています。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 6">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">Benefits</div>
+              <div class="badge">限定3社のみ</div>
+              <h1>モニターパートナー3社の特典</h1>
+              <h2>初期導入の不安を下げながら、成果につながる設計でご一緒します。</h2>
+              <div class="benefit-cards">
+                <div class="panel"><h3>特典① 特別価格</h3><p>通常5万円/月のところ、モニター特別価格3万円/月（税別）</p></div>
+                <div class="panel"><h3>特典② 個別最適化</h3><p>貴社の業務・課題に合わせた完全カスタマイズ</p></div>
+                <div class="panel"><h3>特典③ 継続サポート</h3><p>プログラム終了後1ヶ月の無料フォローアップ</p></div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="placeholder">
+                <div class="visual-label">ダミービジュアル枠</div>
+                <div class="placeholder-box">ここに「3特典カード」<br>または「価格強調バッジ」</div>
+                <div class="placeholder-note">価格表記は本文側で更新済み。右側はダミー表示のみで旧金額は出しません。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 7">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">Expected Outcomes</div>
+              <h1>想定される成果</h1>
+              <h2>時間短縮だけでなく、判断・発信・推進のリズムが整います。</h2>
+              <div class="kpi-row">
+                <div class="kpi-card"><h3>議事録作成時間</h3><span class="kpi">80%削減</span></div>
+                <div class="kpi-card"><h3>情報発信スピード</h3><span class="kpi">3倍</span></div>
+                <div class="kpi-card"><h3>経営判断スピード</h3><span class="kpi">向上</span></div>
+              </div>
+              <div class="compare">
+                <div class="compare-box"><h3>導入前の不安</h3><ul><li>現場に定着するか</li><li>効果が見えるか</li><li>使いこなせるか</li></ul></div>
+                <div class="compare-box"><h3>導入後の変化</h3><ul><li>繰り返し業務の負荷軽減</li><li>発信と共有が速くなる</li><li>次の一手を考える時間が増える</li></ul></div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="visual">
+                <div class="visual-label">ダミービジュアル候補</div>
+                <img src="images/slide07.jpg" alt="成果の参考ビジュアル">
+                <div class="placeholder-note">候補例：KPIカード / Before → After 比較図</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 8">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">Simple Process</div>
+              <h1>進め方の流れ</h1>
+              <h2>宴会場向けに、3ステップでシンプルに整理しています。</h2>
+              <div class="step-list">
+                <div class="step"><div class="step-num">1</div><div><h3>相談する</h3><p>現状のお困りごとをヒアリングし、方向性を確認します。</p></div></div>
+                <div class="step"><div class="step-num">2</div><div><h3>伴走する</h3><p>8週間で議事録・発信業務からAI活用を実装します。</p></div></div>
+                <div class="step"><div class="step-num">3</div><div><h3>定着させる</h3><p>成果確認を行い、次の一手につなげます。</p></div></div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="placeholder">
+                <div class="visual-label">ダミービジュアル枠</div>
+                <div class="placeholder-box">ここに「3ステップ矢印図」<br>または「相談 → 伴走 → 定着」</div>
+                <div class="placeholder-note">図解候補だけを見せ、文字面積を大きく確保しています。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" aria-label="スライド 9">
+          <div class="layout">
+            <div class="left">
+              <div class="eyebrow">FAQ Simplified</div>
+              <h1>よくあるご質問</h1>
+              <h2>宴会場向けに、特に多い2点に絞って掲載しています。</h2>
+              <div class="faq-grid">
+                <div class="qa">
+                  <div class="qa-line"><div class="qa-badge qb">Q</div><strong>AIに詳しくなくても大丈夫ですか？</strong></div>
+                  <div class="qa-line"><div class="qa-badge ab">A</div><span>はい。普段お使いの業務から始めるため、専門知識は不要です。</span></div>
+                </div>
+                <div class="qa">
+                  <div class="qa-line"><div class="qa-badge qb">Q</div><strong>投資対効果は見えるのでしょうか？</strong></div>
+                  <div class="qa-line"><div class="qa-badge ab">A</div><span>導入前の数値を基準に、時間短縮や発信速度などを定量的に可視化します。</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="placeholder">
+                <div class="visual-label">ダミービジュアル枠</div>
+                <div class="placeholder-box">ここに「Q&Aカード」<br>または「安心材料2点」</div>
+                <div class="placeholder-note">FAQは2項目に絞り、遠くからでも読みやすくしています。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide slide-10" aria-label="スライド 10">
+          <div class="closing">
+            <div>
+              <div class="eyebrow" style="color:rgba(255,255,255,.95)">Closing Message</div>
+              <h1>一緒に、未来の経営を<br>始めませんか？</h1>
+              <p class="subtitle">モニターパートナー3社限定の募集です。</p>
+              <div class="contact">
+                <div class="contact-title">まずは30分の個別相談から</div>
+                <div class="contact-list">
+                  <div><strong>発表者:</strong> 市川 亨（GSJ株式会社）</div>
+                  <div><strong>Mail:</strong> ichi1958@sfc.keio.ac.jp</div>
+                  <div><strong>Tel:</strong> 080-5673-4710</div>
+                </div>
+                <div class="contact-note">2026年7月24日 早慶ビアパーティーにて</div>
+              </div>
+            </div>
+            <div class="right">
+              <div class="placeholder" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22)">
+                <div class="visual-label" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff">クロージング参考ビジュアル</div>
+                <div class="placeholder-box" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.38);color:#fff;height:220px">ここに「問い合わせ強調カード」<br>または「最後の一押しビジュアル」</div>
+                <div class="placeholder-note" style="color:rgba(255,255,255,.92)">右側はダミー枠に留め、左側メッセージと連絡先を最大限強調しています。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="hud">
+        <div class="indicator" aria-live="polite"><span class="current" id="currentPage">1</span><span>/</span><span id="totalPages">10</span></div>
+        <div class="controls">
+          <button class="btn" id="prevBtn" type="button">← 前へ</button>
+          <button class="btn primary" id="nextBtn" type="button">次へ →</button>
+        </div>
+      </div>
+      <div class="visually-hidden" aria-live="polite" id="srStatus">1 / 10</div>
+      <audio id="bgmAudio" src="audio/bgm.mp3" preload="auto" loop></audio>
+      <audio id="narrationAudio" preload="auto"></audio>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const total = slides.length;
+      const progressBar = document.getElementById('progressBar');
+      const currentPage = document.getElementById('currentPage');
+      const totalPages = document.getElementById('totalPages');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const autoplayBtn = document.getElementById('autoplayBtn');
+      const fullscreenBtn = document.getElementById('fullscreenBtn');
+      const srStatus = document.getElementById('srStatus');
+      const deck = document.getElementById('deck');
+      const startAudioBtn = document.getElementById('startAudioBtn');
+      const audioStartOverlay = document.getElementById('audioStartOverlay');
+      const bgmAudio = document.getElementById('bgmAudio');
+      const narrationAudio = document.getElementById('narrationAudio');
+
+      const narrationSources = [
+        'audio/slide01_narration.mp3',
+        'audio/slide02_narration.mp3',
+        'audio/slide03_narration.mp3',
+        'audio/slide04_narration.mp3',
+        'audio/slide05_narration.mp3',
+        'audio/slide06_narration.mp3',
+        'audio/slide07_narration.mp3',
+        'audio/slide08_narration.mp3',
+        'audio/slide09_narration.mp3',
+        'audio/slide10_narration.mp3'
+      ];
+
+      const narrationDurations = [23.184, 21.504, 22.488, 26.424, 21.384, 22.848, 24.576, 21.144, 21.288, 15.336];
+      const SLIDE_BUFFER_MS = 1200;
+      const BGM_VOLUME = 0.10;
+      const NARRATION_VOLUME = 1.0;
+
+      let index = 0;
+      let autoplayEnabled = true;
+      let slideAdvanceTimer = null;
+      let audioReady = false;
+
+      totalPages.textContent = total;
+      bgmAudio.volume = BGM_VOLUME;
+      narrationAudio.volume = NARRATION_VOLUME;
+
+      function updateSlide(nextIndex){
+        index = Math.max(0, Math.min(total - 1, nextIndex));
+        slides.forEach((slide, i) => {
+          slide.classList.remove('active','prev','next');
+          if(i === index) slide.classList.add('active');
+          else if(i < index) slide.classList.add('prev');
+          else slide.classList.add('next');
+        });
+        currentPage.textContent = String(index + 1);
+        srStatus.textContent = `${index + 1} / ${total}`;
+        progressBar.style.width = `${((index + 1) / total) * 100}%`;
+        prevBtn.disabled = index === 0;
+        nextBtn.disabled = index === total - 1;
+      }
+
+      function clearSlideAdvance(){
+        if(slideAdvanceTimer){
+          clearTimeout(slideAdvanceTimer);
+          slideAdvanceTimer = null;
+        }
+      }
+
+      function syncAutoplayButton(){
+        autoplayBtn.textContent = autoplayEnabled ? '⏸ 自動再生中' : '▶ 自動再生停止中';
+        autoplayBtn.classList.toggle('autoplay-on', autoplayEnabled);
+      }
+
+      function playNarrationForCurrentSlide(){
+        if(!audioReady) return;
+        narrationAudio.pause();
+        narrationAudio.currentTime = 0;
+        narrationAudio.src = narrationSources[index];
+        narrationAudio.load();
+        narrationAudio.play().catch(() => {});
+      }
+
+      function scheduleAdvanceForCurrentSlide(){
+        clearSlideAdvance();
+        if(!autoplayEnabled) return;
+        const waitMs = Math.round((narrationDurations[index] || 8) * 1000 + SLIDE_BUFFER_MS);
+        slideAdvanceTimer = setTimeout(() => {
+          if(index >= total - 1){
+            stopAutoplay();
+            return;
+          }
+          goToSlide(index + 1, { manual:false, restartNarration:true });
+        }, waitMs);
+      }
+
+      function goToSlide(nextIndex, { manual = false, restartNarration = true } = {}){
+        updateSlide(nextIndex);
+        if(manual) stopAutoplay({ keepCurrentNarration:true });
+        if(audioReady && restartNarration) playNarrationForCurrentSlide();
+        if(audioReady && autoplayEnabled) scheduleAdvanceForCurrentSlide();
+      }
+
+      function stopAutoplay({ keepCurrentNarration = false } = {}){
+        autoplayEnabled = false;
+        clearSlideAdvance();
+        if(audioReady && !keepCurrentNarration){
+          narrationAudio.pause();
+        }
+        syncAutoplayButton();
+      }
+
+      function resumeAutoplay(){
+        autoplayEnabled = true;
+        syncAutoplayButton();
+        if(audioReady){
+          playNarrationForCurrentSlide();
+          scheduleAdvanceForCurrentSlide();
+        }
+      }
+
+      function manualNext(){
+        if(index >= total - 1) return;
+        goToSlide(index + 1, { manual:true, restartNarration:true });
+      }
+
+      function manualPrev(){
+        if(index <= 0) return;
+        goToSlide(index - 1, { manual:true, restartNarration:true });
+      }
+
+      function toggleFullscreen(){
+        if(!document.fullscreenElement) deck.requestFullscreen?.();
+        else document.exitFullscreen?.();
+      }
+
+      async function startPresentationAudio(){
+        audioReady = true;
+        audioStartOverlay.style.display = 'none';
+        try {
+          bgmAudio.currentTime = 0;
+          await bgmAudio.play();
+        } catch (e) {}
+        autoplayEnabled = true;
+        syncAutoplayButton();
+        playNarrationForCurrentSlide();
+        scheduleAdvanceForCurrentSlide();
+      }
+
+      startAudioBtn.addEventListener('click', startPresentationAudio);
+      prevBtn.addEventListener('click', manualPrev);
+      nextBtn.addEventListener('click', manualNext);
+      autoplayBtn.addEventListener('click', async () => {
+        if(!audioReady){
+          await startPresentationAudio();
+          return;
+        }
+        if(autoplayEnabled) stopAutoplay({ keepCurrentNarration:true });
+        else resumeAutoplay();
+      });
+      fullscreenBtn.addEventListener('click', toggleFullscreen);
+      narrationAudio.addEventListener('ended', () => {
+        if(!audioReady || !autoplayEnabled) return;
+        clearSlideAdvance();
+        if(index >= total - 1){
+          stopAutoplay();
+          return;
+        }
+        slideAdvanceTimer = setTimeout(() => goToSlide(index + 1, { manual:false, restartNarration:true }), 700);
+      });
+      document.addEventListener('fullscreenchange', () => {
+        fullscreenBtn.textContent = document.fullscreenElement ? '✕ 全画面終了' : '⛶ 全画面';
+      });
+      document.addEventListener('keydown', async (e) => {
+        const key = e.key;
+        if(key === 'ArrowRight' || key === 'PageDown' || key === ' '){ e.preventDefault(); manualNext(); }
+        else if(key === 'ArrowLeft' || key === 'PageUp'){ e.preventDefault(); manualPrev(); }
+        else if(key === 'Home'){ e.preventDefault(); goToSlide(0, { manual:true, restartNarration:true }); }
+        else if(key === 'End'){ e.preventDefault(); goToSlide(total - 1, { manual:true, restartNarration:true }); }
+        else if(key === 'f' || key === 'F'){ e.preventDefault(); toggleFullscreen(); }
+        else if(key === 'Enter' && !audioReady){ e.preventDefault(); await startPresentationAudio(); }
+      });
+
+      updateSlide(0);
+      syncAutoplayButton();
+    })();
+  </script>
+</body>
+</html>
