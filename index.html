@@ -79,6 +79,9 @@
     .closing{position:relative;z-index:2;display:grid;grid-template-columns:72fr 28fr;gap:22px;height:100%;align-items:center}
     .closing h1{color:#fff;font-size:clamp(48px,4.1vw,78px)}.closing .subtitle{margin:0 0 24px;color:rgba(255,255,255,.95);font-size:clamp(26px,1.7vw,34px);line-height:1.55;font-weight:900}
     .contact{padding:26px;border-radius:26px;background:rgba(255,255,255,.16);border:2px solid rgba(255,255,255,.32);backdrop-filter:blur(14px);box-shadow:0 18px 40px rgba(12,24,46,.18)}
+    .contact-body{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+    .contact-text{flex:1 1 280px;min-width:0}
+    .contact-qr-large{width:clamp(180px,15vw,260px);height:clamp(180px,15vw,260px);flex-shrink:0;background:#fff;border-radius:24px;padding:16px;box-shadow:0 12px 32px rgba(8,30,56,.30);display:block}
     .contact-title{display:inline-flex;padding:10px 16px;border-radius:999px;background:rgba(255,255,255,.20);border:2px solid rgba(255,255,255,.22);font-size:20px;font-weight:900;margin-bottom:16px;color:#fff}
     .contact-list{display:grid;gap:10px;color:#fff;font-size:clamp(24px,1.48vw,32px);line-height:1.75;font-weight:900}.contact-note{margin-top:16px;color:rgba(255,255,255,.9);font-size:clamp(19px,1.05vw,23px);font-weight:800}
     .hud{position:absolute;left:20px;right:20px;bottom:16px;z-index:50;display:flex;justify-content:space-between;align-items:center;gap:16px}.indicator{display:inline-flex;align-items:center;gap:10px;padding:11px 15px;border-radius:999px;background:rgba(255,255,255,.94);border:2px solid var(--line);box-shadow:var(--shadow-soft);font-size:16px;font-weight:900;color:var(--navy)}.indicator .current{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#fff;font-size:15px}
@@ -91,7 +94,7 @@
     .audio-meta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:20px}
     .audio-meta span{padding:10px 14px;border-radius:999px;background:#eef5fb;border:2px solid var(--line);font-size:14px;font-weight:900;color:var(--navy-2)}
     .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
-    @media (max-width:1120px){.slide{padding:54px 34px 96px}.layout,.closing{grid-template-columns:1fr;gap:18px}.program-cards,.compare{grid-template-columns:1fr}.visual img{height:180px}.hero-media img{width:100%;right:-10%;opacity:.12}}
+    @media (max-width:1120px){.slide{padding:54px 34px 96px}.layout,.closing{grid-template-columns:1fr;gap:18px}.program-cards,.compare{grid-template-columns:1fr}.visual img{height:180px}.hero-media img{width:100%;right:-10%;opacity:.12}.contact-body{flex-direction:column;align-items:flex-start}}
     @media (max-width:760px){.app{padding:10px}.deck{width:98vw;border-radius:18px}.slide{padding:46px 18px 104px}.shortcut{display:none}.hud{left:12px;right:12px;bottom:12px;flex-wrap:wrap}.controls{width:100%;justify-content:flex-end}.btn{padding:11px 14px;font-size:14px}}
   </style>
 </head>
@@ -330,20 +333,24 @@
               <h1>一緒に、未来の経営を<br>始めませんか？</h1>
               <p class="subtitle">モニターパートナー3社限定の募集です。</p>
               <div class="contact">
-                <div class="contact-title">まずは30分の個別相談から</div>
-                <div class="contact-list">
-                  <div><strong>発表者:</strong> 市川 亨（GSJ株式会社）</div>
-                  <div><strong>Mail:</strong> ichi1958@sfc.keio.ac.jp</div>
-                  <div><strong>Tel:</strong> 080-5673-4710</div>
+                <div class="contact-body">
+                  <div class="contact-text">
+                    <div class="contact-title">まずは30分の個別相談から</div>
+                    <div class="contact-list">
+                      <div><strong>発表者:</strong> 市川 亨（GSJ株式会社）</div>
+                      <div><strong>Mail:</strong> ichi1958@sfc.keio.ac.jp</div>
+                      <div><strong>Tel:</strong> 080-5673-4710</div>
+                    </div>
+                    <div class="contact-note">2026年7月24日 早慶ビアパーティーにて</div>
+                  </div>
+                  <img src="images/contact_qr.png" alt="モニターパートナーご案内ページQRコード" class="contact-qr-large">
                 </div>
-                <div class="contact-note">2026年7月24日 早慶ビアパーティーにて</div>
               </div>
             </div>
             <div class="right">
               <div class="placeholder" style="background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.22);text-align:center;padding:24px">
                 <div class="visual-label" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.22);color:#fff">まずは覗いてみるだけでも</div>
-                <img src="images/contact_qr.png" alt="モニターパートナーご案内ページQRコード" style="width:200px;height:200px;background:#fff;border-radius:16px;padding:12px;margin:14px auto;display:block;box-shadow:0 8px 24px rgba(8,30,56,.25)">
-                <div style="color:#fff;font-weight:800;font-size:15px;word-break:break-all;line-height:1.6">claude.ai/code/artifact/<br>7b34663a-0d9a-4918-80b5-59b662106004</div>
+                <div style="color:#fff;font-weight:800;font-size:15px;word-break:break-all;line-height:1.6;margin-top:14px">claude.ai/code/artifact/<br>7b34663a-0d9a-4918-80b5-59b662106004</div>
                 <div class="placeholder-note" style="color:rgba(255,255,255,.92);margin-top:10px">募集概要・4つの目線フレームワークなど詳細をご覧いただけます</div>
               </div>
             </div>
